@@ -8,6 +8,7 @@ class CPU:
     self.memory = Memory()
     self.cache = Cache()
     self.registers = [0] * Number_Registers
+    self.cache_use = True
 
   # Memory
   def write_to_memory(self, address, value):
@@ -36,4 +37,18 @@ class CPU:
     if destination[1] == 0:
       print("That register it's only for number 0!")
       return
-    
+    self.registers[destination[1]] = self.registers[source_s[1]] + self.registers[source_t[1]]
+  
+  def addi_instruction(self, destination, source_s, immediate):
+    if self.destination[1] == 0:
+      print("That register it's only for number 0!")
+      return
+    self.registers[destination[1]] = self.registers[source_s[1]] + int(immediate)
+  
+  def cache_instruction(self, number):
+    if number == 0:
+      self.cache_use = False
+    if number == 1:
+      self.cache_use = True
+    if number == 2:
+      self.cache.flush()
