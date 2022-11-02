@@ -10,6 +10,7 @@ class CPU:
     self.registers = [0] * Number_Registers
     self.cache_use = True
 
+
   # Memory
   def write_to_memory(self, address, value):
     self.memory.write(address, value)
@@ -20,6 +21,7 @@ class CPU:
   def get_value_memory_address(self, value):
     return self.memory.get_value_address(value)
   # --- #
+
 
   # Cache
   def write_to_cache(self, tag, value):
@@ -32,42 +34,51 @@ class CPU:
     return self.cache.get_value_tag(value)
   # --- #
 
+
   # Registers
   def reset_registers(self):
     for i in range(len(self.registers)):
       self.registers[i] = 0
 
   def write_to_register(self, register, value):
-    if not self.cache_use:
+    if int(register[1]) == 0:
+      print("\n" + "That register it's only for number 0!", end='\n\n')
+      return
+
+    ## If cache_use is False
+    if self.cache_use is False:
       address = self.get_value_memory_address(value)
       if not address:
-        print("Can't write that value to register!")
+        print("Can't write that value to register!", end='\n\n')
         return
-      self.registers[register[1]] = self.memory.memory.dict[address]
+      self.registers[int(register[1])] = self.memory.memory_dict[address]
     
+    ## If cache_use is True
     tag = self.get_value_cache_tag(value)
-    if not tag:
+    if tag:
+      self.registers[int(register[1])] = self.read_from_cache(tag)
+    else:
       address = self.get_value_memory_address(value)
       if not address:
-        print("Can't write that value to register!")
+        print("Can't write that value to register!", end='\n\n')
         return
-      self.registers[register[1]] = self.memory.memory_dict[address]
+      self.registers[int(register[1])] = self.memory.memory_dict[address]
       self.write_to_cache(address, value)
-    self.registers[register[1]] = self.read_from_cache(tag)
   # --- #
 
-  # CPU functions
+
+  # CPU functions (need to write into the register before doing the instruction)
   def add_instruction(self, destination, source_s, source_t):
-    if destination[1] == 0:
+    if int(destination[1]) == 0:
       print("That register it's only for number 0!")
       return
-    self.registers[destination[1]] = self.registers[source_s[1]] + self.registers[source_t[1]]
+    self.registers[int(destination[1])] = self.registers[int(source_s[1])] + self.registers[int(source_t[1])]
   
   def addi_instruction(self, destination, source_s, immediate):
-    if self.destination[1] == 0:
+    if int(destination[1]) == 0:
       print("That register it's only for number 0!")
       return
-    self.registers[destination[1]] = self.registers[source_s[1]] + int(immediate)
+    self.registers[int(destination[1])] = self.registers[int(source_s[1])] + int(immediate)
   
   def cache_instruction(self, number):
     if number == 0:

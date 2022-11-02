@@ -1,7 +1,7 @@
 from collections import deque
 from memory_cs104 import Memory
 
-Cache_Space = 4
+Cache_Space = 16
 
 class Cache:
   def __init__(self):
@@ -19,10 +19,9 @@ class Cache:
     for i in range(Cache_Space):
       if self.cache[i][0] == tag:
         return self.cache[i][1]
-    print("That's not a valid cache tag!")
+    print("That's not a valid cache tag!", end='\n\n')
 
   def get_value_tag(self, value):
     for tag, cache_value in self.cache:
       if cache_value == value:
         return tag
-    print("That value isn't in cache. Getting value from memory!")
