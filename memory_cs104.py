@@ -19,3 +19,8 @@ class Memory():
     if address in self.memory_dict:
       return self.memory_dict[address]
     print("That's not a valid memory address!")
+
+  def get_value_address(self, value):
+    for address, memory_value in self.memory_dict.items():
+      if memory_value == value:
+        return address
