@@ -16,20 +16,44 @@ class CPU:
 
   def read_from_memory(self, address):
     return self.memory.read(address)
+  
+  def get_value_memory_address(self, value):
+    return self.memory.get_value_address(value)
   # --- #
 
   # Cache
-  def write_to_cache(self, value):
-    self.cache.write(value)
+  def write_to_cache(self, tag, value):
+    self.cache.write(tag, value)
   
   def read_from_cache(self, tag):
     return self.cache.read(tag)
+  
+  def get_value_cache_tag(self, value):
+    return self.cache.get_value_tag(value)
   # --- #
 
   # Registers
   def reset_registers(self):
     for i in range(len(self.registers)):
       self.registers[i] = 0
+
+  def write_to_register(self, register, value):
+    if not self.cache_use:
+      address = self.get_value_memory_address(value)
+      if not address:
+        print("Can't write that value to register!")
+        return
+      self.registers[register[1]] = self.memory.memory.dict[address]
+    
+    tag = self.get_value_cache_tag(value)
+    if not tag:
+      address = self.get_value_memory_address(value)
+      if not address:
+        print("Can't write that value to register!")
+        return
+      self.registers[register[1]] = self.memory.memory_dict[address]
+      self.write_to_cache(address, value)
+    self.registers[register[1]] = self.read_from_cache(tag)
   # --- #
 
   # CPU functions

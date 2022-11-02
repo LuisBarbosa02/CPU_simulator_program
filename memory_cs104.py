@@ -24,3 +24,4 @@ class Memory():
     for address, memory_value in self.memory_dict.items():
       if memory_value == value:
         return address
+    print("That value isn't stored at memory!")
