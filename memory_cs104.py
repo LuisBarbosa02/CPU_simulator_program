@@ -13,9 +13,9 @@ class Memory():
     if address in self.memory_dict:
       self.memory_dict[address] = value
       return
-    print("That's not a valid address!")
+    print("That's not a valid memory address!")
   
   def read(self, address):
     if address in self.memory_dict:
       return self.memory_dict[address]
-    print("That's not a valid address!")
+    print("That's not a valid memory address!")
