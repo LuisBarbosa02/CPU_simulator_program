@@ -90,9 +90,19 @@ class CPU:
 
   def parse_instruction(self, instruction):
     splited_instruction = instruction.split(',')
+    
     if splited_instruction[0] == 'ADD':
+      print("Adding...")
+      self.write_to_register(splited_instruction[2], int(input('Choose the number: ')))
+      self.write_to_register(splited_instruction[3], int(input('Choose the number: ')))
       self.add_instruction(splited_instruction[1], splited_instruction[2], splited_instruction[3])
+      print(f"Result: {self.registers[int(splited_instruction[1][1])]}", end='\n\n')
+    
     if splited_instruction[0] == 'ADDI':
+      print("Adding with an immediate...")
+      self.write_to_register(splited_instruction[2], int(input('Choose the number: ')))
       self.addi_instruction(splited_instruction[1], splited_instruction[2], splited_instruction[3])
+      print(f"Result: {self.registers[int(splited_instruction[1][1])]}", end='\n\n')
+    
     if splited_instruction[0] == 'CACHE':
       self.cache_instruction(splited_instruction[1])
