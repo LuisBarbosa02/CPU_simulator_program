@@ -13,11 +13,15 @@ def insert_data_into_memory():
 def parse_instructions():
   with open(INSTRUCTION_INPUT) as II:
     for instruction in [line.strip() for line in II.readlines()]:
+      splited_instruction = instruction.split(',')
+      if splited_instruction[0] == 'HALT':
+        cpu.halt_instruction()
+        break
       cpu.parse_instruction(instruction)
 
 # --- #
 
-# Testing
+# Program
 
 cpu = CPU()
 

@@ -52,11 +52,13 @@ class CPU:
         print("Can't write that value to register!", end='\n\n')
         return
       self.registers[int(register[1])] = self.memory.memory_dict[address]
+      return
     
     ## If cache_use is True
     tag = self.get_value_cache_tag(value)
     if tag:
       self.registers[int(register[1])] = self.read_from_cache(tag)
+      return
     else:
       address = self.get_value_memory_address(value)
       if not address:
@@ -64,6 +66,7 @@ class CPU:
         return
       self.registers[int(register[1])] = self.memory.memory_dict[address]
       self.write_to_cache(address, value)
+      return
   # --- #
 
 
@@ -88,21 +91,36 @@ class CPU:
     if number == 2:
       self.cache.flush()
 
+  def halt_instruction(self):
+    print("Halting the instructions!")
+    return
+  # --- #
+
+  # Parsing the instructions
   def parse_instruction(self, instruction):
     splited_instruction = instruction.split(',')
     
     if splited_instruction[0] == 'ADD':
       print("Adding...")
+      self.reset_registers()
       self.write_to_register(splited_instruction[2], int(input('Choose the number: ')))
       self.write_to_register(splited_instruction[3], int(input('Choose the number: ')))
       self.add_instruction(splited_instruction[1], splited_instruction[2], splited_instruction[3])
       print(f"Result: {self.registers[int(splited_instruction[1][1])]}", end='\n\n')
     
     if splited_instruction[0] == 'ADDI':
-      print("Adding with an immediate...")
+      print(f"Adding with the immediate {splited_instruction[3]}...")
+      self.reset_registers()
       self.write_to_register(splited_instruction[2], int(input('Choose the number: ')))
       self.addi_instruction(splited_instruction[1], splited_instruction[2], splited_instruction[3])
       print(f"Result: {self.registers[int(splited_instruction[1][1])]}", end='\n\n')
     
     if splited_instruction[0] == 'CACHE':
+      if splited_instruction[1] == '0':
+        print("Turning the cache off!", end='\n\n')
+      if splited_instruction[1] == '1':
+        print("Turning the cache on!", end='\n\n')
+      if splited_instruction[1] == '2':
+        print("Flushing the cache!", end='\n\n')
       self.cache_instruction(splited_instruction[1])
+  # --- #
