@@ -87,3 +87,12 @@ class CPU:
       self.cache_use = True
     if number == 2:
       self.cache.flush()
+
+  def parse_instruction(self, instruction):
+    splited_instruction = instruction.split(',')
+    if splited_instruction[0] == 'ADD':
+      self.add_instruction(splited_instruction[1], splited_instruction[2], splited_instruction[3])
+    if splited_instruction[0] == 'ADDI':
+      self.addi_instruction(splited_instruction[1], splited_instruction[2], splited_instruction[3])
+    if splited_instruction[0] == 'CACHE':
+      self.cache_instruction(splited_instruction[1])

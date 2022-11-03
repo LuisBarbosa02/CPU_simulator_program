@@ -22,4 +22,4 @@ def parse_instructions():
 cpu = CPU()
 
 insert_data_into_memory()
-print(cpu.memory.memory_dict)
+parse_instructions()
